@@ -1,6 +1,5 @@
 void transmit(int prefix, int value)
 {
-  // Serial.write(00);
   Serial.write(prefix);
   Serial.write(value);
   Serial.write(99);
@@ -11,7 +10,6 @@ class Potentiometer
 
   int prefix;
   int pin;
-  int value = 0;
   int lastTransmittedValue = 0;
   int sensorValue = 0;
   public:
@@ -28,9 +26,8 @@ class Potentiometer
     void Transmit()
     {
       Update();
-      if (lastTransmittedValue > sensorValue || lastTransmittedValue < sensorValue)
+      if (lastTransmittedValue != sensorValue)
       {
-
         transmit(prefix, sensorValue);
         lastTransmittedValue = sensorValue;
       }
@@ -167,48 +164,23 @@ class TouchButton
 
 Led leds[] =
 {
-  // Effect1
-  Led(4, 4, 512),
-  
+  Led(4, 4, 512),  
 };
 
 GeneralEncoder encoders[] =
 {
-  // Effect1a
-  GeneralEncoder(22, 23, 22),
-  // Effect1b
-  GeneralEncoder(24, 25, 24),
-  // Effect2a
-  GeneralEncoder(28, 29, 26),
-  // Effect2b
-  GeneralEncoder(30, 31, 28),
-  // Effect3a
-  GeneralEncoder(34, 35, 30),
-  // Effect3b
-  GeneralEncoder(36, 37, 32),
-  // Effect4a
-  GeneralEncoder(40, 41, 34),
-  // Effect4b
-  GeneralEncoder(42, 43, 36),
-  // Effect4c
-  GeneralEncoder(44, 45, 44)
+  //GeneralEncoder(22, 23, 22),
 };
-
 
 TouchButton touchbuttons[] =
 {
-  // Effect1
   TouchButton(14, 14),
 };
 
 Potentiometer potentiometers[] =
 {
-  // Guitar Toggle switch pin,prefix,min1,min2,min3,min4,min5,min6
   Potentiometer(A0, 90),
-
 };
-
-
 
 int numEncoders = 0;
 int numTouchButtons = 0;
@@ -217,7 +189,6 @@ int numPotentiometers = 0;
 void setup()
 {
   Serial.begin(9600);
-  // numEncoders =sizeof(encoders);
   numEncoders = sizeof(encoders) /sizeof(encoders[0]) + 1;
   numLeds = sizeof(leds) /sizeof(leds[0]) + 1;
   numTouchButtons = sizeof(touchbuttons) /sizeof(touchbuttons[0]) + 1;

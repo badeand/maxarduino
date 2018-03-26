@@ -185,13 +185,8 @@ class TouchButton
 DimmableLED leds[] =
 {
   // Effect1
-  DimmableLED(2, 2, 512),
-  // Effect2
-  DimmableLED(3, 3, 512),
-  // Effect3
   DimmableLED(4, 4, 512),
-  // Effect4
-  DimmableLED(5, 5, 512)
+  
 };
 
 GeneralEncoder encoders[] =
@@ -219,13 +214,7 @@ GeneralEncoder encoders[] =
 TouchButton touchbuttons[] =
 {
   // Effect1
-  TouchButton(54, 57),
-  // Effect2
-  TouchButton(55, 56),
-  // Effect3
-  TouchButton(56, 55),
-  // Effect4
-  TouchButton(57, 54)
+  TouchButton(14, 14),
 };
 
 Potentiometer potentiometers[] =

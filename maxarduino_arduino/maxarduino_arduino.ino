@@ -1,3 +1,7 @@
+#include <Arduino.h>
+#include <TM1637Display.h>
+
+
 void transmit(int prefix, int value)
 {
   Serial.write(prefix);
@@ -8,10 +12,10 @@ void transmit(int prefix, int value)
 class Potentiometer
 {
 
-  int prefix;
-  int pin;
-  int lastTransmittedValue = 0;
-  int sensorValue = 0;
+    int prefix;
+    int pin;
+    int lastTransmittedValue = 0;
+    int sensorValue = 0;
   public:
     Potentiometer(int _pin, int _prefix)
     {
@@ -32,21 +36,21 @@ class Potentiometer
         lastTransmittedValue = sensorValue;
       }
     }
-    
+
 };
 
 class GeneralEncoder
 {
-  int pinA = 0;
-  int pinB = 0;
-  int pos = 0;
-  unsigned char encoder_A;
-  unsigned char encoder_B;
-  unsigned char encoder_A_prev = 0;
-  int prefix;
+    int pinA = 0;
+    int pinB = 0;
+    int pos = 0;
+    unsigned char encoder_A;
+    unsigned char encoder_B;
+    unsigned char encoder_A_prev = 0;
+    int prefix;
   public:
     GeneralEncoder(int pA,
-    int pB, int pf)
+                   int pB, int pf)
     {
       pinA = pA;
       pinB = pB;
@@ -97,11 +101,40 @@ class GeneralEncoder
     }
 };
 
+
+
+class TM1637
+{
+    int pinClk;
+    int pinDio;
+    int prefix;
+
+  public:
+    TM1637(int _pinClk, int _pinDio, int _prefix)
+    {
+      pinClk = _pinClk;
+      pinDio = _pinDio;
+      prefix = _prefix;
+    }
+    void SetValue(int _value)
+    {
+      TM1637Display display(pinClk, pinDio);
+      display.setBrightness(0xa);
+      display.showNumberDecEx(_value, 1, false);
+    }
+
+    int GetPrefix()
+    {
+      return prefix;
+    }
+
+};
+
 class Led
 {
-  int brightness;
-  int pin;
-  int prefix;
+    int brightness;
+    int pin;
+    int prefix;
   public:
     Led(int _pin, int _prefix, int _brightness)
     {
@@ -135,9 +168,9 @@ class Led
 
 class TouchButton
 {
-  int prefix;
-  int state;
-  int pin;
+    int prefix;
+    int state;
+    int pin;
   public:
     TouchButton(int _pin, int _prefix)
     {
@@ -164,8 +197,14 @@ class TouchButton
 
 Led leds[] =
 {
-  Led(4, 4, 512),  
+  Led(4, 4, 512),
 };
+
+TM1637 tm1637s[] =
+{
+  TM1637(2, 3, 2),
+};
+
 
 GeneralEncoder encoders[] =
 {
@@ -186,12 +225,14 @@ int numEncoders = 0;
 int numTouchButtons = 0;
 int numLeds = 0;
 int numPotentiometers = 0;
+int numTm1637s = 0;
 void setup()
 {
   Serial.begin(9600);
-  numEncoders = sizeof(encoders) /sizeof(encoders[0]) + 1;
-  numLeds = sizeof(leds) /sizeof(leds[0]) + 1;
-  numTouchButtons = sizeof(touchbuttons) /sizeof(touchbuttons[0]) + 1;
+  numEncoders = sizeof(encoders) / sizeof(encoders[0]) + 1;
+  numLeds = sizeof(leds) / sizeof(leds[0]) + 1;
+  numTm1637s = sizeof(tm1637s) / sizeof(tm1637s[0]) + 1;
+  numTouchButtons = sizeof(touchbuttons) / sizeof(touchbuttons[0]) + 1;
   numPotentiometers = sizeof(potentiometers) / sizeof(potentiometers[0]) + 1;
 }
 
@@ -237,7 +278,7 @@ void loop()
   if (Serial.available() >= 3)
   {
     if (Serial.read() == 255)
-    // Oppdater LED- lamper (Leds)
+      // Oppdater LED- lamper (Leds)
     {
       int b = Serial.read();
       int v = Serial.read();
@@ -248,6 +289,17 @@ void loop()
           leds[i].SetBrightness(v * 2);
         }
       }
+      for (int i = 0; i < numTm1637s - 1; i++)
+      {
+        if (tm1637s[i].GetPrefix() == b)
+        {
+          tm1637s[i].SetValue(v);
+        }
+      }
+
+
+
+
     }
   }
   delay(2);

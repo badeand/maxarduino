@@ -2,7 +2,7 @@
 	"name" : "maxarduino_max",
 	"version" : 1,
 	"creationdate" : 3604932343,
-	"modificationdate" : 3604935267,
+	"modificationdate" : 3604938357,
 	"viewrect" : [ 803.0, 204.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -37,6 +37,11 @@
 			}
 ,
 			"potentiometer.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"tm1637.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}

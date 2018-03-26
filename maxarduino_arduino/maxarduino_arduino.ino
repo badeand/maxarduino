@@ -8,47 +8,30 @@ void transmit(int prefix, int value)
 
 class Potentiometer
 {
-  int min1;
-  int min2;
-  int min3;
-  int min4;
-  int min5;
-  int min6;
+
   int prefix;
   int pin;
   int value = 0;
   int lastTransmittedValue = 0;
   int sensorValue = 0;
   public:
-    Potentiometer(int _pin, int _prefix, int _min1, int _min2,int _min3, int _min4,int _min5, int _min6)
+    Potentiometer(int _pin, int _prefix)
     {
       prefix = _prefix;
       pin = _pin;
       pinMode(pin, INPUT);
-      min1 = _min1;
-      min2 = _min2;
-      min3 = _min3;
-      min4 = _min4;
-      min5 = _min5;
-      min6 = _min6;
     }
     void Update()
     {
-      sensorValue = analogRead(pin);
-      // Serial.println(value);
+      sensorValue = analogRead(pin) / 5;
     }
     void Transmit()
     {
       Update();
-      if (lastTransmittedValue > sensorValue+10 || lastTransmittedValue < sensorValue-10)
+      if (lastTransmittedValue > sensorValue || lastTransmittedValue < sensorValue)
       {
-      if(sensorValue > min1 && sensorValue < min2) value = 2;
-      else if(sensorValue > min2 && sensorValue < min3) value = 1;
-      else if(sensorValue > min3 && sensorValue < min4) value = 4;
-      else if(sensorValue > min4 && sensorValue < min5) value = 3;
-      else if(sensorValue > min5 && sensorValue < min6) value = 5;
-      else value = 0;
-        transmit(prefix, value);
+
+        transmit(prefix, sensorValue);
         lastTransmittedValue = sensorValue;
       }
     }
@@ -221,7 +204,7 @@ TouchButton touchbuttons[] =
 Potentiometer potentiometers[] =
 {
   // Guitar Toggle switch pin,prefix,min1,min2,min3,min4,min5,min6
-  Potentiometer(A5, 59, 141,199,260,350,460,563),
+  Potentiometer(A0, 90),
 
 };
 

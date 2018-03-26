@@ -117,13 +117,13 @@ class GeneralEncoder
     }
 };
 
-class DimmableLED
+class Led
 {
   int brightness;
   int pin;
   int prefix;
   public:
-    DimmableLED(int _pin, int _prefix, int _brightness)
+    Led(int _pin, int _prefix, int _brightness)
     {
       pin = _pin;
       prefix = _prefix;
@@ -182,10 +182,10 @@ class TouchButton
     }
 };
 
-DimmableLED leds[] =
+Led leds[] =
 {
   // Effect1
-  DimmableLED(4, 4, 512),
+  Led(4, 4, 512),
   
 };
 
@@ -210,6 +210,7 @@ GeneralEncoder encoders[] =
   // Effect4c
   GeneralEncoder(44, 45, 44)
 };
+
 
 TouchButton touchbuttons[] =
 {
@@ -282,7 +283,7 @@ void loop()
   if (Serial.available() >= 3)
   {
     if (Serial.read() == 255)
-    // Oppdater LED- lamper (DimmableLEDs)
+    // Oppdater LED- lamper (Leds)
     {
       int b = Serial.read();
       int v = Serial.read();
